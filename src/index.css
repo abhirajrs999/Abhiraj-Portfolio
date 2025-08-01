@@ -2,41 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Embedded Systems Portfolio Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Terminal Theme Colors */
+    --terminal-bg: 0 0% 0%;
+    --terminal-fg: 120 100% 50%;
+    --terminal-cursor: 120 100% 50%;
+    --terminal-success: 120 100% 50%;
+    --terminal-warning: 45 100% 50%;
+    --terminal-error: 0 100% 50%;
+    --terminal-muted: 120 50% 35%;
+    --terminal-border: 120 30% 25%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* BIOS Theme Colors */
+    --bios-bg: 240 100% 15%;
+    --bios-fg: 0 0% 85%;
+    --bios-accent: 60 100% 80%;
+    --bios-border: 240 50% 30%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* CRT Theme Colors */
+    --crt-bg: 0 0% 5%;
+    --crt-fg: 120 100% 70%;
+    --crt-glow: 120 100% 50%;
+    --crt-scanline: 120 100% 20%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* LED Matrix */
+    --led-on: 120 100% 50%;
+    --led-off: 120 20% 10%;
+    --led-bg: 0 0% 5%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Default theme mappings */
+    --background: var(--terminal-bg);
+    --foreground: var(--terminal-fg);
+    --primary: var(--terminal-success);
+    --primary-foreground: var(--terminal-bg);
+    --secondary: var(--terminal-muted);
+    --secondary-foreground: var(--terminal-fg);
+    --muted: var(--terminal-muted);
+    --muted-foreground: var(--terminal-fg);
+    --accent: var(--terminal-warning);
+    --accent-foreground: var(--terminal-bg);
+    --destructive: var(--terminal-error);
+    --destructive-foreground: var(--terminal-bg);
+    --border: var(--terminal-border);
+    --input: var(--terminal-border);
+    --ring: var(--terminal-success);
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --radius: 0.25rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -92,6 +106,20 @@ All colors MUST be HSL.
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
+  /* Theme Classes */
+  .theme-bios {
+    --background: var(--bios-bg);
+    --foreground: var(--bios-fg);
+    --primary: var(--bios-accent);
+    --border: var(--bios-border);
+  }
+
+  .theme-crt {
+    --background: var(--crt-bg);
+    --foreground: var(--crt-fg);
+    --primary: var(--crt-glow);
+  }
 }
 
 @layer base {
@@ -100,6 +128,102 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-mono;
+  }
+
+  /* Terminal Styling */
+  .terminal {
+    @apply bg-background text-foreground font-mono text-sm leading-relaxed;
+  }
+
+  /* CRT Effect */
+  .crt-effect {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .crt-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      transparent 50%, 
+      hsl(var(--crt-scanline) / 0.1) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* LED Matrix Styling */
+  .led-on {
+    background-color: hsl(var(--led-on));
+    box-shadow: 0 0 10px hsl(var(--led-on) / 0.8);
+  }
+
+  .led-off {
+    background-color: hsl(var(--led-off));
+  }
+
+  /* Typing Animation */
+  .typing-cursor::after {
+    content: '_';
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* Boot Messages */
+  .boot-message {
+    opacity: 0;
+    animation: fadeInUp 0.3s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ASCII Art Glow */
+  .ascii-glow {
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.8);
+  }
+
+  /* Terminal Prompt */
+  .prompt {
+    color: hsl(var(--primary));
+  }
+
+  .command {
+    color: hsl(var(--foreground));
+  }
+
+  .output {
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Success/Error States */
+  .status-ok {
+    color: hsl(var(--terminal-success));
+  }
+
+  .status-warning {
+    color: hsl(var(--terminal-warning));
+  }
+
+  .status-error {
+    color: hsl(var(--terminal-error));
   }
 }
