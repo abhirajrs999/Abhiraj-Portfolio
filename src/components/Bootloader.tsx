@@ -17,12 +17,11 @@ const Bootloader = ({ onBootComplete }: BootloaderProps) => {
   const [pressedEnter, setPressedEnter] = useState(false);
 
   const bootMessages: BootMessage[] = [
-    { text: "Initializing skills module…", status: 'loading', delay: 800 },
+    { text: "Initializing skills module…", status: 'ok', delay: 800 },
     { text: "Detecting experience modules…", status: 'ok', delay: 600 },
     { text: "Loading education firmware…", status: 'ok', delay: 700 },
     { text: "Verifying thesis integration…", status: 'ok', delay: 900 },
     { text: "Mounting project filesystem…", status: 'ok', delay: 650 },
-    { text: "Starting embedded peripherals…", status: 'ok', delay: 550 },
   ];
 
   useEffect(() => {

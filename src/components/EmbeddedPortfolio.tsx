@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Bootloader from './Bootloader';
 import Terminal from './Terminal';
-import Userland from './Userland';
+import SimplePortfolio from './portfolio/SimplePortfolio';
 
 type Stage = 'bootloader' | 'kernel' | 'userland';
 
@@ -31,7 +31,9 @@ const EmbeddedPortfolio = () => {
       )}
       
       {currentStage === 'userland' && (
-        <Userland onBackToTerminal={handleBackToTerminal} />
+        <div key="modern-portfolio" style={{backgroundColor: '#f3e8ff', minHeight: '100vh'}}>
+          <SimplePortfolio />
+        </div>
       )}
     </div>
   );
